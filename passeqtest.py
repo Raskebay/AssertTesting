@@ -5,21 +5,20 @@ import string
 
 
 def password_seq(value: str) -> str:
+    if len(value) < 8:
+        return 'Too weak'
     digits = string.digits
     lowers = string.ascii_lowercase
     uppers = lowers.upper()
-    if len(value) < 8:
-        return 'Too weak'
-    if all(i in digits for i in value) or all(i in lowers for i in value) or all(
-            i in uppers for i in value):
-        return 'Weak'
-    if any(i in digits for i in value) and any(i in lowers for i in value) and any(
-            i in uppers for i in value):
+    count = 0
+    for symbols in (digits, lowers, uppers):
+        if any(i in symbols for i in value):
+            count += 1
+            continue
+    if count == 3:
         return 'Very good'
-    if (any(i in digits for i in value) and any(i in lowers for i in value)) or (
-            any(i in digits for i in value) and any(i in uppers for i in value)) or (
-            any(i in lowers for i in value) and any(i in uppers for i in value)):
-        return 'Good'
+    return 'Weak' if count == 1 else 'Good'
+
 
 
 if __name__ == '__main__':
